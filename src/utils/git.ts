@@ -8,7 +8,7 @@ export const getTargetBranch = () => {
 export const getCurrentBranch = async () => {
   let branch = '';
 
-  await exec.exec(`git branch --show-current`, [], {
+  await exec.exec(`git rev-parse --abbrev-ref HEAD`, [], {
     listeners: {
       stdout: (data: Buffer) => {
         branch += data.toString();

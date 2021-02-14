@@ -12,7 +12,7 @@ const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
 
 const addReleaseFiles = async () => {
   const files = ['action.yml', 'dist/index.js', 'README.md'];
-  await exec.exec(`git add`, files);
+  await exec.exec(`git add -f`, files);
 };
 
 export const createCommit = async ({ version }: CommitOptions) => {
