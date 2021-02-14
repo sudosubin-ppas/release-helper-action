@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { getCurrentBranch, getTargetBranch } from './utils/git';
+import { getCurrentBranch, getTargetBranch, setupGit } from './utils/git';
 import { createCommit } from './utils/git-commit';
 import { createRelease } from './utils/git-release';
 import { getPackageVersion } from './utils/package-json';
@@ -8,10 +8,11 @@ import { setupYarn } from './utils/package-manager';
 
 const run = async () => {
   core.info('Setting up environment');
+  await setupGit();
   await setupYarn();
   const version = await getPackageVersion();
   const targetBranch = getTargetBranch();
-  const currentBranch = await getCurrentBranch();
+  const currentBranch = getCurrentBranch();
 
   core.info('Prepare action');
   const prepareCommand = core.getInput('prepare-command');

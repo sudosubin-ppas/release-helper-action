@@ -3,8 +3,6 @@ author: 'sudosubin'
 description: 'A helper action for releasing actions without hassles.'
 
 inputs:
-  repo-token:
-    description: 'GitHub token.'
   prepare-command:
     description: 'The command used to prepare your project.'
     default: 'yarn install --frozen-lockfile'
