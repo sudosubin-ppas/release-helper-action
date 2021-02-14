@@ -1,6 +1,6 @@
-name: '<ACTION_DISPLAY_NAME>'
-author: '<ACTION_AUTHOR_NAME>'
-description: '<ACTION_DESCRIPTION>'
+name: 'Release Helper Action'
+author: 'sudosubin'
+description: 'A helper action for releasing actions without hassles.'
 
 inputs:
   # <INPUTS_NAME>:
@@ -12,6 +12,6 @@ runs:
   using: 'node12'
   main: 'dist/index.js'
 
-# branding:
-#   icon: 'package'
-#   color: 'white'
+branding:
+  icon: 'package'
+  color: 'white'

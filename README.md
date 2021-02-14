@@ -1,7 +1,7 @@
 # TypeScript Action Template
 
-![Repository License](https://img.shields.io/github/license/sudosubin-ppas/typescript-action-template)
-![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/typescript-action-template)
+![Repository License](https://img.shields.io/github/license/sudosubin-ppas/release-helper-action)
+![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action)
 
 
 ## Create an action using this template
