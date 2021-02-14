@@ -1,0 +1,25 @@
+name: 'Release Helper Action'
+author: 'sudosubin'
+description: 'A helper action for releasing actions without hassles.'
+
+inputs:
+  prepare-command:
+    description: 'The command used to prepare your project.'
+    default: 'yarn install --frozen-lockfile'
+  build-command:
+    description: 'The command used to build your project.'
+    default: 'yarn run build'
+  target-branch:
+    description: 'The branch name you want to publish your release.'
+    default: 'release'
+  create-release:
+    description: 'Whether you create a GitHub release or not. (without updating the package.json version, this step will fail)'
+    default: 'false'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'package'
+  color: 'white'
