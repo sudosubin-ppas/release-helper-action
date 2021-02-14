@@ -18,3 +18,7 @@ export const getCurrentBranch = async () => {
 
   return branch;
 };
+
+export const getGithubBotAuthor = () => {
+  return 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>';
+};

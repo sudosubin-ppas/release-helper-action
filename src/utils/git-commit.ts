@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import { getGithubBotAuthor } from './git';
 import { CommitOptions, TargetBranchOptions } from './types';
 
 const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
@@ -25,7 +26,10 @@ export const createCommit = async ({ version }: CommitOptions) => {
   await addReleaseFiles();
 
   core.debug('Commit');
-  await exec.exec(`git commit -m 'v${version}'`);
+  const author = getGithubBotAuthor();
+  await exec.exec(
+    `git commit --author="${author}" -m "v${version}" --no-verify`
+  );
 
   core.debug('Push');
   await exec.exec(`git push origin ${targetBranch}`);
