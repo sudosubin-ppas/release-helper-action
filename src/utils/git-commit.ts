@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { CommitOptions, TargetBranchOptions } from './types';
+import { CommitOptions, TargetBranchOptions } from '../types';
 
 const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   try {

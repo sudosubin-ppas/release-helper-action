@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { ReleaseOptions } from './types';
+import { ReleaseOptions } from '../types';
 
 export const checkToCreateRelease = async () => {
   core.debug('Check to create a release');
