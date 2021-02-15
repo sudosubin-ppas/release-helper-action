@@ -10,9 +10,9 @@ const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   }
 
   try {
-    await exec.exec(`git checkout --orphan ${targetBranch}`);
-  } catch (error) {
     await exec.exec(`git checkout ${targetBranch}`);
+  } catch (error) {
+    await exec.exec(`git checkout --orphan ${targetBranch}`);
   }
 };
 
