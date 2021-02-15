@@ -3,5 +3,5 @@ import * as exec from '@actions/exec';
 
 export const setupYarn = async () => {
   core.debug('Installing yarn');
-  await exec.exec('sudo npm install --global yarn');
+  await exec.exec('npm install --global yarn');
 };
