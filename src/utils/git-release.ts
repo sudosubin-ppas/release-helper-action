@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { ReleaseOptions } from '../types';
+import { VersionOptions } from '../types';
 
 export const checkToCreateRelease = async () => {
   core.debug('Check to create a release');
@@ -12,9 +12,6 @@ const checkoutReleaseBranch = async () => {
   const targetBranch = exec.exec(`git checkout --orphan release-test`);
 };
 
-export const createRelease = async ({
-  version,
-  currentBranch,
-}: ReleaseOptions) => {
+export const createRelease = async ({ version }: VersionOptions) => {
   exec.exec('git status');
 };

@@ -1,13 +1,14 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import { command } from './file';
 
 export const getTargetBranch = () => {
   return core.getInput('target-branch');
 };
 
-export const getCurrentBranch = () => {
-  const ref = process.env.GITHUB_REF || '';
-  return ref.replace('refs/heads/', '');
+export const getCurrentBranch = async () => {
+  const output = await command(`git rev-parse --abbrev-ref HEAD`);
+  return output.trim();
 };
 
 export const setupGit = async () => {

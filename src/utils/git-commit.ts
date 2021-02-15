@@ -1,6 +1,8 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import { CommitOptions, TargetBranchOptions } from '../types';
+import { backupFiles, restoreFiles } from './file';
+import { getCurrentBranch } from './git';
 
 const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   try {
@@ -22,13 +24,20 @@ const addReleaseFiles = async () => {
   await exec.exec(`git add -f`, files);
 };
 
-export const createCommit = async ({ version }: CommitOptions) => {
-  const targetBranch = core.getInput('target-branch');
+export const createCommit = async ({
+  version,
+  targetBranch,
+}: CommitOptions) => {
+  const currentBranch = await getCurrentBranch();
+
+  core.debug('Backup files');
+  const files = await backupFiles();
 
   core.debug('Checkout to target branch');
   await checkoutReleaseBranch({ targetBranch });
 
   core.debug('Add files');
+  await restoreFiles(files);
   await addReleaseFiles();
 
   core.debug('Commit');
@@ -36,4 +45,7 @@ export const createCommit = async ({ version }: CommitOptions) => {
 
   core.debug('Push');
   await exec.exec(`git push origin ${targetBranch}`);
+
+  core.debug('Checkout to previous branch');
+  await exec.exec(`git checkout -f ${currentBranch}`);
 };

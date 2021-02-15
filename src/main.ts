@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { getCurrentBranch, getTargetBranch, setupGit } from './utils/git';
+import { getTargetBranch, setupGit } from './utils/git';
 import { createCommit } from './utils/git-commit';
 import { createRelease } from './utils/git-release';
 import { getPackageVersion } from './utils/package-json';
@@ -13,7 +13,6 @@ const run = async () => {
     await setupYarn();
     const version = await getPackageVersion();
     const targetBranch = getTargetBranch();
-    const currentBranch = getCurrentBranch();
 
     core.info('Prepare action');
     const prepareCommand = core.getInput('prepare-command');
@@ -27,7 +26,7 @@ const run = async () => {
     await createCommit({ version, targetBranch });
 
     core.info('Create Release');
-    await createRelease({ version, currentBranch });
+    await createRelease({ version });
   } catch (error) {
     core.setFailed(`Action failed for uncaught error: ${error}`);
   }

@@ -3,9 +3,8 @@ export interface CommitOptions {
   targetBranch: string;
 }
 
-export interface ReleaseOptions {
+export interface VersionOptions {
   version: string;
-  currentBranch: string;
 }
 
 export interface TargetBranchOptions {
