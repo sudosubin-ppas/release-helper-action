@@ -4,6 +4,12 @@ import { CommitOptions, TargetBranchOptions } from './types';
 
 const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   try {
+    await exec.exec(`git fetch origin ${targetBranch}`);
+  } catch (error) {
+    core.debug(`${targetBranch} doesn't exists in remote repository`);
+  }
+
+  try {
     await exec.exec(`git checkout --orphan ${targetBranch}`);
   } catch (error) {
     await exec.exec(`git checkout ${targetBranch}`);
