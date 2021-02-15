@@ -31,13 +31,13 @@ export const createCommit = async ({
   const currentBranch = await getCurrentBranch();
 
   core.debug('Backup files');
-  const files = await backupFiles();
+  const files = backupFiles();
 
   core.debug('Checkout to target branch');
   await checkoutReleaseBranch({ targetBranch });
 
   core.debug('Add files');
-  await restoreFiles(files);
+  restoreFiles(files);
   await addReleaseFiles();
 
   core.debug('Commit');

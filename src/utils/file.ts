@@ -1,4 +1,5 @@
 import * as exec from '@actions/exec';
+import fs from 'fs';
 
 export const command = async (commandLine: string, args?: string[]) => {
   let output = '';
@@ -14,24 +15,19 @@ export const command = async (commandLine: string, args?: string[]) => {
   return output;
 };
 
-export const backupFiles = async () => {
+export const backupFiles = () => {
   const files = ['action.yml', 'dist/index.js', 'README.md'];
   const outputs: Record<string, string> = {};
 
-  await Promise.all(
-    files.map(async (file) => {
-      outputs[file] = await command(`cat ${file}`);
-    })
-  );
+  files.map((file) => {
+    outputs[file] = fs.readFileSync(file).toString();
+  });
 
   return outputs;
 };
 
-export const restoreFiles = async (files: Record<string, string>) => {
-  await Promise.all(
-    Object.keys(files).map(async (file) => {
-      const content = files[file];
-      await exec.exec(`echo`, [`"""${content}""" > ${file}`]);
-    })
-  );
+export const restoreFiles = (files: Record<string, string>) => {
+  Object.keys(files).map((file) => {
+    fs.writeFileSync(file, files[file]);
+  });
 };
