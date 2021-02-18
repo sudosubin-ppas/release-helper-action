@@ -1,7 +1,7 @@
 # Release Helper Action
 
 ![Repository License](https://img.shields.io/github/license/sudosubin-ppas/release-helper-action)
-![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action)
+![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action?include_prereleases)
 
 
 ## Quick Start
