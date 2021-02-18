@@ -4,6 +4,18 @@
 ![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action)
 
 
+## Quick Start
+
+```yml
+- uses: sudosubin-ppas/release-helper-action@v0.1.0
+  with:
+    prepare-command: 'yarn install --frozen-lockfile'
+    build-command: 'yarn run build'
+    target-branch: 'release'
+    create-release: 'false'
+```
+
+
 ## How does it work
 
 0. You need to `checkout` in your project.
