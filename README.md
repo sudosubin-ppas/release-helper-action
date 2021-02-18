@@ -1,4 +1,4 @@
-# TypeScript Action Template
+# Release Helper Action
 
 ![Repository License](https://img.shields.io/github/license/sudosubin-ppas/release-helper-action)
 ![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action)
@@ -13,4 +13,4 @@
 
 ## License
 
-TypeScript Action Template is [MIT Licensed](./LICENSE).
+Release Helper Action is [MIT Licensed](./LICENSE).
