@@ -11,6 +11,12 @@
 2. (Optional) This action will create a tag and a release. You can manually toggle your release to publish or not.
 
 
+## Examples
+
+- You can find this action's definitions from [action.yml](./action.yml).
+- You can find a real usage from [.github/workflows/release.yml](./.github/workflows/release.yml).
+
+
 ## License
 
 Release Helper Action is [MIT Licensed](./LICENSE).
