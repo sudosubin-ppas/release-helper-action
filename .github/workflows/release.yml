@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: '14.x'
       - uses: sudosubin-ppas/release-helper-action@0.1.0
+        with:
           prepare-command: 'yarn install --frozen-lockfile'
           build-command: 'yarn run build'
           target-branch: 'release'
