@@ -4,9 +4,11 @@
 ![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action)
 
 
-## Create an action using this template
+## How does it work
 
-Click the `Use this template` button, and keep going on.
+0. You need to `checkout` in your project.
+1. This action will build your project, and create a commit to the `release` branch.
+2. (Optional) This action will create a tag and a release. You can manually toggle your release to publish or not.
 
 
 ## License
