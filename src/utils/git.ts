@@ -7,6 +7,13 @@ export const getTargetBranch = () => {
   return core.getInput('target-branch');
 };
 
+export const git = async (commandLine: string, args?: string[]) => {
+  if (!process.env.REPO_DIR) {
+    throw new Error('Git repoDir was not set!');
+  }
+  await exec.exec(`git -C ${process.env.REPO_DIR} ${commandLine}`, args);
+};
+
 export const setupGit = async () => {
   const repoDir = await createTempDir();
   await io.cp('.', repoDir, { recursive: true, force: false });
@@ -19,5 +26,5 @@ export const setupGit = async () => {
   await exec.exec(`git -C ${repoDir} config user.email ${email}`);
   await exec.exec(`git -C ${repoDir} remote set-url origin ${repo}`);
 
-  return repoDir;
+  process.env.REPO_DIR = repoDir;
 };

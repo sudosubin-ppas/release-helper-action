@@ -23,3 +23,14 @@ export const createTempDir = async () => {
   await io.mkdirP(tempDir);
   return tempDir;
 };
+
+export const copyToRepo = async (files: string[]) => {
+  const repoDir = process.env.REPO_DIR;
+
+  await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(repoDir, file);
+      await io.cp(file, filePath, { recursive: true, force: true });
+    })
+  );
+};
