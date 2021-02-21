@@ -1,27 +1,23 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { command } from './file';
+import * as io from '@actions/io';
+import { createTempDir } from './file';
 
 export const getTargetBranch = () => {
   return core.getInput('target-branch');
 };
 
-export const getCurrentBranch = async () => {
-  const output = await command(`git rev-parse --abbrev-ref HEAD`);
-  return output.trim();
-};
-
 export const setupGit = async () => {
+  const repoDir = await createTempDir();
+  await io.cp('.', repoDir, { recursive: true, force: false });
+
   const name = 'github-actions[bot]';
   const email = '41898282+github-actions[bot]@users.noreply.github.com';
   const repo = `https://${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-  await exec.exec(`git config`, ['user.name', name]);
-  await exec.exec(`git config`, ['user.email', email]);
-  await exec.exec(`git remote set-url origin ${repo}`);
-};
+  await exec.exec(`git -C ${repoDir} config user.name ${name}`);
+  await exec.exec(`git -C ${repoDir} config user.email ${email}`);
+  await exec.exec(`git -C ${repoDir} remote set-url origin ${repo}`);
 
-export const cleanGit = async () => {
-  await exec.exec(`git config --unset user.name`);
-  await exec.exec(`git config --unset user.email`);
+  return repoDir;
 };
