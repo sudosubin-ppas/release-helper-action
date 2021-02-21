@@ -18,10 +18,10 @@ const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   }
 };
 
-const addReleaseFiles = async () => {
-  const files = ['action.yml', 'dist/index.js', 'README.md'];
+const addReleaseFiles = async (files: Record<string, string>) => {
+  restoreFiles(files);
   await exec.exec(`git reset`);
-  await exec.exec(`git add -f`, files);
+  await exec.exec(`git add -f`, Object.keys(files));
 };
 
 export const createCommit = async ({
@@ -37,11 +37,10 @@ export const createCommit = async ({
   await checkoutReleaseBranch({ targetBranch });
 
   core.debug('Add files');
-  restoreFiles(files);
-  await addReleaseFiles();
+  await addReleaseFiles(files);
 
   core.debug('Commit');
-  await exec.exec(`git commit --no-verify --allow-empty`, [`-m "${version}"`]);
+  await exec.exec(`git commit --no-verify --allow-empty`, [`-m ${version}`]);
 
   core.debug('Push');
   await exec.exec(`git push origin ${targetBranch}`);
