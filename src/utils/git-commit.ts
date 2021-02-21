@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import { CommitOptions, TargetBranchOptions } from '../types';
 import { backupFiles, restoreFiles } from './file';
-import { getCurrentBranch, getGitAuthor } from './git';
+import { getCurrentBranch } from './git';
 
 const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   try {
@@ -28,7 +28,6 @@ export const createCommit = async ({
   version,
   targetBranch,
 }: CommitOptions) => {
-  const author = getGitAuthor();
   const currentBranch = await getCurrentBranch();
 
   core.debug('Backup files');
@@ -42,14 +41,7 @@ export const createCommit = async ({
   await addReleaseFiles();
 
   core.debug('Commit');
-  await exec.exec(`git`, [
-    `-c user.name="${author.username}"`,
-    `-c user.email="${author.email}"`,
-    `commit`,
-    `--no-verify`,
-    `--allow-empty`,
-    `-m "v${version}"`,
-  ]);
+  await exec.exec(`git commit --no-verify --allow-empty`, [`-m "v${version}"`]);
 
   core.debug('Push');
   await exec.exec(`git push origin ${targetBranch}`);

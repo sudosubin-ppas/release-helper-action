@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { getTargetBranch, setupGit } from './utils/git';
+import { cleanGit, getTargetBranch, setupGit } from './utils/git';
 import { createCommit } from './utils/git-commit';
 import { createRelease } from './utils/git-release';
 import { getPackageVersion } from './utils/package-json';
@@ -29,6 +29,13 @@ const run = async () => {
     await createRelease({ version });
   } catch (error) {
     core.setFailed(`Action failed for uncaught error: ${error}`);
+  }
+
+  try {
+    core.info('Clean up');
+    await cleanGit();
+  } catch (error) {
+    core.setFailed(`Cleaning failed for uncaught error: ${error}`);
   }
 };
 
