@@ -41,7 +41,7 @@ export const createCommit = async ({
   await addReleaseFiles();
 
   core.debug('Commit');
-  await exec.exec(`git commit --no-verify --allow-empty`, [`-m "v${version}"`]);
+  await exec.exec(`git commit --no-verify --allow-empty`, [`-m "${version}"`]);
 
   core.debug('Push');
   await exec.exec(`git push origin ${targetBranch}`);

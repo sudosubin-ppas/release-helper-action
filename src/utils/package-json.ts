@@ -3,8 +3,7 @@ import { command } from './file';
 
 export const getPackageVersion = async () => {
   const output = await command(`npm -s run env echo`, ['$npm_package_version']);
-  const version = output.trim();
-  core.info(`Version found: v${version}`);
-
+  const version = `v${output.trim()}`;
+  core.debug(`Version found: ${version}`);
   return version;
 };
