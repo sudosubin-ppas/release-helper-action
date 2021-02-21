@@ -13,7 +13,7 @@ inputs:
     description: 'The branch name you want to publish your release.'
     default: 'release'
   create-release:
-    description: 'Whether you create a GitHub release or not. (without updating the package.json version, this step will fail)'
+    description: 'To create a GitHub release or not. (without updating the package.json version, this step will be skipped)'
     default: 'false'
 
 runs:

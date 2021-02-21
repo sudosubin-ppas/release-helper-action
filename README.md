@@ -7,6 +7,10 @@
 ## Quick Start
 
 ```yml
+- uses: actions/setup-node@v2
+  with:
+    node-version: '12.x'
+
 - uses: sudosubin-ppas/release-helper-action@v0.1.0
   with:
     prepare-command: 'yarn install --frozen-lockfile'
