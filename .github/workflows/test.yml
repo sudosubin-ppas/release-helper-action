@@ -18,6 +18,7 @@ jobs:
       - name: 'Build action'
         run: |
           yarn run build
+          npm uninstall -g yarn
       - name: 'Test action'
         uses: ./
         with:
