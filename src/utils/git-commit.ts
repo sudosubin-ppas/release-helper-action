@@ -1,13 +1,9 @@
 import * as core from '@actions/core';
 import { TargetBranchOptions, VersionOptions } from '../types';
 import { copyToRepo } from './file';
-import { git, setupGit } from './git';
+import { git } from './git';
 
-const checkoutReleaseBranch = async ({
-  targetBranch,
-}: {
-  targetBranch: string;
-}) => {
+const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   try {
     await git(`fetch origin ${targetBranch}`);
   } catch (error) {
@@ -21,7 +17,7 @@ const checkoutReleaseBranch = async ({
   }
 };
 
-const addReleaseFiles = async ({ files }: { files: string[] }) => {
+const addReleaseFiles = async (files: string[]) => {
   await git(`reset`);
   await git(`add -f`, files);
 };
@@ -30,17 +26,14 @@ export const createCommit = async ({
   version,
   targetBranch,
 }: VersionOptions & TargetBranchOptions) => {
-  await setupGit();
   const files = ['README.md', 'action.yml', 'dist/index.js'];
 
   core.debug('Checkout to target branch');
   await checkoutReleaseBranch({ targetBranch });
 
-  core.debug('Copy files');
-  await copyToRepo(files);
-
   core.debug('Add files');
-  await addReleaseFiles({ files });
+  await copyToRepo(files);
+  await addReleaseFiles(files);
 
   core.debug('Commit');
   await git(`commit --no-verify --allow-empty`, [`-m ${version}`]);

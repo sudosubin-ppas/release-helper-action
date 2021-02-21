@@ -15,16 +15,14 @@ export const git = async (commandLine: string, args?: string[]) => {
 };
 
 export const setupGit = async () => {
-  const repoDir = await createTempDir();
-  await io.cp('.', repoDir, { recursive: true, force: false });
+  process.env.REPO_DIR = await createTempDir();
+  await io.cp('.', process.env.REPO_DIR, { recursive: true, force: false });
 
   const name = 'github-actions[bot]';
   const email = '41898282+github-actions[bot]@users.noreply.github.com';
   const repo = `https://${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-  await exec.exec(`git -C ${repoDir} config user.name ${name}`);
-  await exec.exec(`git -C ${repoDir} config user.email ${email}`);
-  await exec.exec(`git -C ${repoDir} remote set-url origin ${repo}`);
-
-  process.env.REPO_DIR = repoDir;
+  await git(`config user.name ${name}`);
+  await git(`config user.email ${email}`);
+  await git(`remote set-url origin ${repo}`);
 };
