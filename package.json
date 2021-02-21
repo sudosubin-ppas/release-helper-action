@@ -1,6 +1,6 @@
 {
   "name": "release-helper-action",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "A helper action for releasing actions without hassles",
   "main": "dist/index.js",
@@ -16,11 +16,15 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.4"
+    "@actions/exec": "^1.0.4",
+    "@actions/io": "^1.0.2",
+    "@actions/tool-cache": "^1.6.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^1.4.2",
     "@types/node": "^14.14.27",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "esbuild": "^0.8.46",

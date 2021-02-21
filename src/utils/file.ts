@@ -1,5 +1,7 @@
 import * as exec from '@actions/exec';
-import fs from 'fs';
+import * as io from '@actions/io';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 export const command = async (commandLine: string, args?: string[]) => {
   let output = '';
@@ -15,19 +17,20 @@ export const command = async (commandLine: string, args?: string[]) => {
   return output;
 };
 
-export const backupFiles = () => {
-  const files = ['action.yml', 'dist/index.js', 'README.md'];
-  const outputs: Record<string, string> = {};
-
-  files.map((file) => {
-    outputs[file] = fs.readFileSync(file).toString();
-  });
-
-  return outputs;
+export const createTempDir = async () => {
+  const temp = process.env['RUNNER_TEMP'] || '';
+  const tempDir = path.join(temp, uuidv4());
+  await io.mkdirP(tempDir);
+  return tempDir;
 };
 
-export const restoreFiles = (files: Record<string, string>) => {
-  Object.keys(files).map((file) => {
-    fs.writeFileSync(file, files[file]);
-  });
+export const copyToRepo = async (files: string[]) => {
+  const repoDir = process.env.REPO_DIR;
+
+  await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(repoDir, file);
+      await io.cp(file, filePath, { recursive: true, force: true });
+    })
+  );
 };
