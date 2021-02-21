@@ -42,8 +42,12 @@ export const createCommit = async ({
   await addReleaseFiles();
 
   core.debug('Commit');
-  await exec.exec(`git commit --no-verify --allow-empty`, [
-    `--author="${author}"`,
+  await exec.exec(`git`, [
+    `-c user.name="${author.username}"`,
+    `-c user.email="${author.email}"`,
+    `commit`,
+    `--no-verify`,
+    `--allow-empty`,
     `-m "v${version}"`,
   ]);
 

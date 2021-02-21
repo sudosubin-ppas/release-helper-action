@@ -14,7 +14,7 @@ export const getCurrentBranch = async () => {
 export const getGitAuthor = () => {
   const username = 'github-actions[bot]';
   const email = '41898282+github-actions[bot]@users.noreply.github.com';
-  return `${username} <${email}>`;
+  return { username, email };
 };
 
 export const setupGit = async () => {
