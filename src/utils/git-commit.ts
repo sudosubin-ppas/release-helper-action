@@ -18,10 +18,9 @@ const checkoutReleaseBranch = async ({ targetBranch }: TargetBranchOptions) => {
   }
 };
 
-const addReleaseFiles = async (files: Record<string, string>) => {
-  restoreFiles(files);
+const addReleaseFiles = async (files: string[]) => {
   await exec.exec(`git reset`);
-  await exec.exec(`git add -f`, Object.keys(files));
+  await exec.exec(`git add -f`, files);
 };
 
 export const createCommit = async ({
@@ -31,10 +30,13 @@ export const createCommit = async ({
   const currentBranch = await getCurrentBranch();
 
   core.debug('Backup files');
-  const files = backupFiles();
+  const backupDir = await backupFiles();
 
   core.debug('Checkout to target branch');
   await checkoutReleaseBranch({ targetBranch });
+
+  core.debug('Restoring files');
+  const files = await restoreFiles(backupDir);
 
   core.debug('Add files');
   await addReleaseFiles(files);
