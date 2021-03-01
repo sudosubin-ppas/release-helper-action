@@ -1,17 +1,51 @@
 import * as core from '@actions/core';
-import * as exec from '@actions/exec';
-import { VersionOptions } from '../types';
+import * as github from '@actions/github';
+import type { RequestError } from '@octokit/types';
+import type { TargetBranchOptions, VersionOptions } from '../types';
+import { getGitInfo } from './git';
 
-export const checkToCreateRelease = async () => {
+const checkToCreateRelease = async () => {
   core.debug('Check to create a release');
   const createRelease = core.getInput('create-release');
-  return createRelease.toLocaleLowerCase() === 'true';
+  return createRelease.toLowerCase() === 'true';
 };
 
-const checkoutReleaseBranch = async () => {
-  const targetBranch = exec.exec(`git checkout --orphan release-test`);
-};
+export const createRelease = async ({
+  version,
+  targetBranch,
+}: VersionOptions & TargetBranchOptions) => {
+  const check = await checkToCreateRelease();
+  if (!check) {
+    core.debug('Release was not created due to action settings.');
+    return;
+  }
 
-export const createRelease = async ({ version }: VersionOptions) => {
-  exec.exec('git status');
+  const { owner, repo } = getGitInfo();
+  const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+  const prerelease = version.startsWith('v0'); // ex: 'v0.1.0'
+
+  try {
+    await octokit.repos.createRelease({
+      owner,
+      repo,
+      tag_name: version,
+      target_commitish: targetBranch,
+      name: version,
+      body: '* This release was automatically created by @github-actions',
+      prerelease,
+    });
+  } catch (err) {
+    const error = err as RequestError;
+    if (typeof error.errors === 'undefined') {
+      throw error;
+    }
+
+    const tagError = error.errors.find((e) => e.code === 'already_exists');
+    if (!tagError) {
+      throw error;
+    }
+
+    core.debug('Duplicate tag name, so release was not created');
+  }
 };
