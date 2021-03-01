@@ -1,6 +1,8 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { TargetBranchOptions, VersionOptions } from '../types';
+import type { RequestError } from '@octokit/types';
+import type { TargetBranchOptions, VersionOptions } from '../types';
+import { getGitInfo } from './git';
 
 const checkToCreateRelease = async () => {
   core.debug('Check to create a release');
@@ -18,19 +20,32 @@ export const createRelease = async ({
     return;
   }
 
+  const { owner, repo } = getGitInfo();
   const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-  const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
-  const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
 
   const prerelease = version.startsWith('v0'); // ex: 'v0.1.0'
 
-  octokit.repos.createRelease({
-    owner,
-    repo,
-    tag_name: version,
-    target_commitish: targetBranch,
-    name: version,
-    body: '* This release was automatically created by @github-actions',
-    prerelease,
-  });
+  try {
+    await octokit.repos.createRelease({
+      owner,
+      repo,
+      tag_name: version,
+      target_commitish: targetBranch,
+      name: version,
+      body: '* This release was automatically created by @github-actions',
+      prerelease,
+    });
+  } catch (err) {
+    const error = err as RequestError;
+    if (typeof error.errors === 'undefined') {
+      throw error;
+    }
+
+    const tagError = error.errors.find((e) => e.code === 'already_exists');
+    if (!tagError) {
+      throw error;
+    }
+
+    core.debug('Duplicate tag name, so release was not created');
+  }
 };
