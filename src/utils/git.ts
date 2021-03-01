@@ -8,7 +8,7 @@ export const getTargetBranch = () => {
 };
 
 export const getGitInfo = () => {
-  const token = core.getInput('repo-token') || process.env.GITHUB_TOKEN;
+  const token = core.getInput('repo-token') || process.env.GITHUB_TOKEN || '';
   const repository = process.env.GITHUB_REPOSITORY || '';
 
   return {
