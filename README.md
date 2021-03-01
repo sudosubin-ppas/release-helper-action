@@ -12,6 +12,8 @@
     build-command: 'yarn run build'
     target-branch: 'release'
     create-release: 'false'
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## How does it work

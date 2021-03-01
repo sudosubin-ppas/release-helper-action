@@ -8,9 +8,11 @@ export const getTargetBranch = () => {
 };
 
 export const getGitInfo = () => {
+  const token = process.env.GITHUB_TOKEN || '';
   const repository = process.env.GITHUB_REPOSITORY || '';
 
   return {
+    token,
     owner: repository.split('/')[0],
     repo: repository.split('/')[1],
   };
@@ -24,13 +26,13 @@ export const git = async (commandLine: string, args?: string[]) => {
 };
 
 export const setupGit = async () => {
-  const { owner, repo } = getGitInfo();
+  const { token, owner, repo } = getGitInfo();
   process.env.REPO_DIR = await createTempDir();
   await io.cp('.', process.env.REPO_DIR, { recursive: true, force: false });
 
   const name = 'github-actions[bot]';
   const email = '41898282+github-actions[bot]@users.noreply.github.com';
-  const repository = `https://${process.env.GITHUB_TOKEN}@github.com/${owner}/${repo}.git`;
+  const repository = `https://${token}@github.com/${owner}/${repo}.git`;
 
   await git(`config user.name ${name}`);
   await git(`config user.email ${email}`);
