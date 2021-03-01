@@ -20,8 +20,8 @@ export const createRelease = async ({
     return;
   }
 
-  const { owner, repo } = getGitInfo();
-  const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+  const { token, owner, repo } = getGitInfo();
+  const octokit = github.getOctokit(token);
 
   const prerelease = version.startsWith('v0'); // ex: 'v0.1.0'
 

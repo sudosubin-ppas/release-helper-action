@@ -4,7 +4,7 @@ declare namespace NodeJS {
     REPO_DIR: string;
 
     // github action default env
-    GITHUB_TOKEN: string;
-    GITHUB_REPOSITORY: string;
+    GITHUB_TOKEN?: string;
+    GITHUB_REPOSITORY?: string;
   }
 }
