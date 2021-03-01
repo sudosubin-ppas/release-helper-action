@@ -8,11 +8,12 @@
 ```yml
 - uses: sudosubin-ppas/release-helper-action@v0.1.3
   with:
-    repo-token: ${{ secrets.GITHUB_TOKEN }}
     prepare-command: 'yarn install --frozen-lockfile'
     build-command: 'yarn run build'
     target-branch: 'release'
     create-release: 'false'
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## How does it work

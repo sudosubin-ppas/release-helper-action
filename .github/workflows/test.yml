@@ -26,3 +26,5 @@ jobs:
           build-command: 'yarn run build'
           target-branch: 'release-test'
           create-release: 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
