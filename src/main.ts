@@ -26,7 +26,7 @@ const run = async () => {
     await createCommit({ version, targetBranch });
 
     core.info('Create Release');
-    await createRelease({ version });
+    await createRelease({ version, targetBranch });
   } catch (error) {
     core.setFailed(`Action failed for uncaught error: ${error}`);
   }

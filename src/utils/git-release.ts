@@ -1,17 +1,35 @@
 import * as core from '@actions/core';
-import * as exec from '@actions/exec';
-import { VersionOptions } from '../types';
+import * as github from '@actions/github';
+import { TargetBranchOptions, VersionOptions } from '../types';
 
-export const checkToCreateRelease = async () => {
+const checkToCreateRelease = async () => {
   core.debug('Check to create a release');
   const createRelease = core.getInput('create-release');
-  return createRelease.toLocaleLowerCase() === 'true';
+  return createRelease.toLowerCase() === 'true';
 };
 
-const checkoutReleaseBranch = async () => {
-  const targetBranch = exec.exec(`git checkout --orphan release-test`);
-};
+export const createRelease = async ({
+  version,
+  targetBranch,
+}: VersionOptions & TargetBranchOptions) => {
+  const check = await checkToCreateRelease();
+  if (!check) {
+    core.debug('Release was not created due to action settings.');
+    return;
+  }
 
-export const createRelease = async ({ version }: VersionOptions) => {
-  exec.exec('git status');
+  const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+  const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
+  const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
+
+  const prerelease = version.startsWith('v0'); // ex: 'v0.1.0'
+
+  octokit.repos.createRelease({
+    owner,
+    repo,
+    tag_name: version,
+    target_commitish: targetBranch,
+    name: version,
+    prerelease,
+  });
 };
