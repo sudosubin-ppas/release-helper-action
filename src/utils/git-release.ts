@@ -30,6 +30,7 @@ export const createRelease = async ({
     tag_name: version,
     target_commitish: targetBranch,
     name: version,
+    body: '* This release was automatically created by @github-actions',
     prerelease,
   });
 };
