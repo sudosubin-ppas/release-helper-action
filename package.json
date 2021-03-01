@@ -1,6 +1,6 @@
 {
   "name": "release-helper-action",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "A helper action for releasing actions without hassles",
   "main": "dist/index.js",

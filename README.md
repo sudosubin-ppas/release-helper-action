@@ -6,7 +6,7 @@
 ## Quick Start
 
 ```yml
-- uses: sudosubin-ppas/release-helper-action@v0.1.1
+- uses: sudosubin-ppas/release-helper-action@v0.1.2
   with:
     prepare-command: 'yarn install --frozen-lockfile'
     build-command: 'yarn run build'
