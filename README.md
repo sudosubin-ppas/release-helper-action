@@ -1,12 +1,12 @@
 # Release Helper Action
 
-![Repository License](https://img.shields.io/github/license/sudosubin-ppas/release-helper-action)
-![Repository Release](https://img.shields.io/github/v/release/sudosubin-ppas/release-helper-action?include_prereleases)
+![Repository License](https://img.shields.io/github/license/sudosubin/release-helper-action)
+![Repository Release](https://img.shields.io/github/v/release/sudosubin/release-helper-action?include_prereleases)
 
 ## Quick Start
 
 ```yml
-- uses: sudosubin-ppas/release-helper-action@v0.1.3
+- uses: sudosubin/release-helper-action@v0.1.3
   with:
     prepare-command: 'yarn install --frozen-lockfile'
     build-command: 'yarn run build'
